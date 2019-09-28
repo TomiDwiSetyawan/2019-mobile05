@@ -20,18 +20,24 @@ public class DynamicActivity extends AppCompatActivity {
     }
 
     public void handlerClickLoadRedFragment(View view) {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.setCustomAnimations(R.anim.enter_from_left,R.anim.exit_from_left,R.anim.enter_from_left,R.anim.exit_from_right);
-        fragmentTransaction.replace(R.id.dynamic_fragment_placeholder,new RedFragment(),"RED_FRAGMENT");
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.dynamic_fragment_placeholder);
+        if(fragment == null  || fragment instanceof BlueFragment){
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.anim.enter_from_left,R.anim.exit_from_left,R.anim.enter_from_left,R.anim.exit_from_right);
+            fragmentTransaction.replace(R.id.dynamic_fragment_placeholder,new RedFragment(),"RED_FRAGMENT");
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+        }
     }
 
     public void handlerClickLoadBlueFragment(View view) {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.dynamic_fragment_placeholder,new BlueFragment(), "BLUE_FRAGMENT");
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.dynamic_fragment_placeholder);
+        if(fragment == null  || fragment instanceof RedFragment){
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.dynamic_fragment_placeholder,new BlueFragment(), "BLUE_FRAGMENT");
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        }
     }
 }
